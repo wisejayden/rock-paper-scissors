@@ -1,11 +1,20 @@
-h1 {
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "helvetica";
+}
+header > h1 {
     text-align: center;
 }
 .mode-selection-container {
     text-align: center;
     border: solid 1px black;
     width: 50vw;
-    margin-left: 25vw;
+    margin: 20px auto;
 
 }
 .player-select {
@@ -20,4 +29,16 @@ h1 {
 
 .hide {
     display: none;
+}
+
+.option {
+    max-width: 5vw;
+}
+
+.go-back {
+    width: 100px;
+}
+.highlighted {
+    border: 1px solid black;
+    border-radius: 50%;
 }
