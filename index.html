@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>Rock, Paper, Scissors</title>
+        <link rel="stylesheet" href="./stylesheet.css">
+    </head>
+    <body>
+        <h1>Rock, Paper, Scissors</h1>
+        <div class="game-selection">
+            <div class="mode-selection-container">
+                <span id="welcome-message">Welcome, How would you like to play?</span>
+                <img class="player-select pvp" name="player-versus-player" src="./public/img/pvp.png" />
+                <img class="player-select pvc" name="player-versus-computer" src="./public/img/pvc.png" />
+                <img class="player-select cvc" name="computer-versus-computer" src="./public/img/cvc.png" />
+            </div>
+        </div>
+        <div class="player-vs-player-game hide">
+            <img class="go-back" name="Go Back" src="./public/img/goback.png" />
+            <p>Player V Player</p>
+        </div>
+        <div class="player-vs-computer-game hide">
+            <img class="go-back" name="Go Back" src="./public/img/goback.png" />
+            <p>Player vs Computer</p>
+        </div>
+        <div class="computer-vs-computer-game hide">
+            <img class="go-back" name="Go Back" src="./public/img/goback.png" />
+            <p>Computer vs computer</p>
+        </div>
+
+
+        <script src="./script.js"></script>
+    </body>
+</html>
+
+<!-- throw in some enviro messages? -->
+<!-- scoreboard -->

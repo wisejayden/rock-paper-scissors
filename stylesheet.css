@@ -1,0 +1,23 @@
+h1 {
+    text-align: center;
+}
+.mode-selection-container {
+    text-align: center;
+    border: solid 1px black;
+    width: 50vw;
+    margin-left: 25vw;
+
+}
+.player-select {
+    cursor: pointer;
+}
+#welcome-message {
+    display: block;
+}
+.player-select {
+    max-width: 5vw;
+}
+
+.hide {
+    display: none;
+}
