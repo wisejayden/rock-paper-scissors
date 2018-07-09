@@ -7,8 +7,12 @@
 body {
     font-family: "helvetica";
 }
+header {
+    background-color: black;
+}
 header > h1 {
     text-align: center;
+    color: white;
 }
 .mode-selection-container {
     text-align: center;
@@ -26,6 +30,36 @@ header > h1 {
 .player-select {
     max-width: 5vw;
 }
+#lose {
+    color: red;
+}
+
+#winner-container {
+    width: 400px;
+    height: 150px;
+    border: 1px solid black;
+    position: relative;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%);
+    background-color: white;
+}
+#winner-container-back {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+#winner-container > h2 {
+    text-align: center;
+}
+#close {
+    position: absolute;
+    right: 1px;
+    top: 1px;
+}
 
 .hide {
     display: none;
@@ -41,4 +75,5 @@ header > h1 {
 .highlighted {
     border: 1px solid black;
     border-radius: 50%;
+    background-color: black;
 }
