@@ -26,6 +26,11 @@ const userWin = document.getElementById('win');
 const userDraw = document.getElementById('draw');
 const userLoss = document.getElementById('lose');
 const closeBox = document.getElementById('close');
+const leftScoreElement = document.getElementById('left-score');
+const rightScoreElement = document.getElementById('right-score');
+const pvcComputerChoice =  document.getElementsByClassName("pvc-computer-choice");
+let leftScore = 0;
+let rightScore = 0;
 
 
 
@@ -57,6 +62,10 @@ for (var i = 0; i < goBack.length; i++) {
         playerVsComputerGame.classList.add("hide");
         computerVsComputerGame.classList.add("hide");
         gameSelection.classList.remove("hide");
+        leftScore = 0;
+        leftScoreElement.innerHTML = leftScore;
+        rightScore = 0;
+        rightScoreElement.innerHTML = rightScore;
     })
 }
 
@@ -73,27 +82,83 @@ function computersChoice() {
     const choice = Math.floor(Math.random() * 3);
     return options[choice];
 }
+function animateComputersChoice() {
+    const number = Math.floor(Math.random() * 20);
+    let currentTarget = 0;
+    let condition = 0;
+    console.log("computer number", number);
 
+    while(condition < number) {
+        if(currentTarget === 3) {
+            currentTarget = 0;
+        }
+        let oldTarget;
+        if(currentTarget === 0) {
+            oldTarget = 2;
+
+        } else {
+            oldTarget = currentTarget - 1;
+        }
+        console.log("oldTarget", oldTarget);
+
+        console.log("currentTarget", currentTarget);
+
+        pvcComputerChoice[currentTarget].classList.add('highlighted');
+        pvcComputerChoice[oldTarget].classList.remove('highlighted');
+        currentTarget++;
+        condition++;
+        myLoop();
+    }
+}
+
+function myLoop(number) {
+    setTimeout(function() {
+        console.log("hi");
+    }, 1000)
+}
+
+function doSetTimeOut() {
+    setTimeout(function() {
+        console.log("e");
+    }, 1000)
+}
+// function doSetTimeOut(i) {
+//     console.log("DO SET TIME OUT FUNCTION");
+//     setTimeout(
+//         function() {
+//             console.log("settimeout function");
+//             pvcComputerChoice[i].classList.remove('highlighted');
+//
+//         },
+//         3000
+//     )
+// }
+// animateComputersChoice();
 
 function game(usersChoice) {
-    const computersChoiceValue = computersChoice();
-    const winner = determineWinner(usersChoice.name, computersChoiceValue);
-    console.log("Users choice - ", usersChoice.name );
-    console.log("Computers choice - ", computersChoiceValue, );
-    winnerBox.classList.remove("hide");
-    winnerBoxBack.classList.remove("hide");
-    if(usersChoice.name === winner) {
-        userWin.classList.remove('hide');
-        console.log("Player 1 wins");
-    } else if (computersChoiceValue === winner) {
-        userLoss.classList.remove('hide');
-
-        console.log("Player 2 wins");
-    } else if (winner === "Draw") {
-        userDraw.classList.remove('hide');
-
-        console.log("Draw");
-    }
+    // const computersChoiceValue = computersChoice();
+    animateComputersChoice();
+    // const winner = determineWinner(usersChoice.name, computersChoiceValue);
+    // console.log("Users choice - ", usersChoice.name );
+    // console.log("Computers choice - ", computersChoiceValue, );
+    // winnerBox.classList.remove("hide");
+    // winnerBoxBack.classList.remove("hide");
+    // if(usersChoice.name === winner) {
+    //     leftScore++;
+    //     leftScoreElement.innerHTML = leftScore;
+    //     userWin.classList.remove('hide');
+    //     console.log("Player 1 wins");
+    // } else if (computersChoiceValue === winner) {
+    //     rightScore++;
+    //     rightScoreElement.innerHTML = rightScore;
+    //     userLoss.classList.remove('hide');
+    //
+    //     console.log("Player 2 wins");
+    // } else if (winner === "Draw") {
+    //     userDraw.classList.remove('hide');
+    //
+    //     console.log("Draw");
+    // }
     // usersChoice.classList.remove("highlighted");
 }
 
