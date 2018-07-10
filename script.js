@@ -82,84 +82,128 @@ function computersChoice() {
     const choice = Math.floor(Math.random() * 3);
     return options[choice];
 }
-function animateComputersChoice() {
-    const number = Math.floor(Math.random() * 20);
-    let currentTarget = 0;
-    let condition = 0;
-    console.log("computer number", number);
 
-    while(condition < number) {
-        if(currentTarget === 3) {
-            currentTarget = 0;
+function computersTurn () {
+    return new Promise(function(resolve, reject) {
+        console.log("Computers Turn");
+        const number = Math.floor(Math.random() * 10);
+        let currentTarget = -1;
+        let condition = 0;
+        animateComputersChoice();
+
+        function animateComputersChoice () {
+           setTimeout(function () {
+              // currentTarget++;
+              if (condition < number) {
+                  currentTarget++;
+                  if(currentTarget === 3) {
+                      currentTarget = 0;
+                  }
+
+                  let oldTarget;
+                  if(currentTarget === 0) {
+                      oldTarget = 2;
+                  } else {
+                      oldTarget = currentTarget - 1;
+                  }
+                  pvcComputerChoice[currentTarget].classList.add('highlighted');
+                  pvcComputerChoice[oldTarget].classList.remove('highlighted');
+
+                  condition++;
+                 animateComputersChoice();
+             } else if (number === 0) {
+                 currentTarget = 0;
+                 pvcComputerChoice[currentTarget].classList.add('highlighted');
+                 console.log("Log the printed out option else if", pvcComputerChoice[currentTarget].name);
+                 return resolve(pvcComputerChoice[currentTarget].name);
+             } else {
+                 console.log("Log the printed out option else", pvcComputerChoice[currentTarget].name);
+                 return resolve(pvcComputerChoice[currentTarget].name);
+             }
+
+         }, 500)
         }
-        let oldTarget;
-        if(currentTarget === 0) {
-            oldTarget = 2;
-
-        } else {
-            oldTarget = currentTarget - 1;
-        }
-        console.log("oldTarget", oldTarget);
-
-        console.log("currentTarget", currentTarget);
-
-        pvcComputerChoice[currentTarget].classList.add('highlighted');
-        pvcComputerChoice[oldTarget].classList.remove('highlighted');
-        currentTarget++;
-        condition++;
-        myLoop();
-    }
+    })
 }
 
-function myLoop(number) {
-    setTimeout(function() {
-        console.log("hi");
-    }, 1000)
-}
 
-function doSetTimeOut() {
-    setTimeout(function() {
-        console.log("e");
-    }, 1000)
-}
-// function doSetTimeOut(i) {
-//     console.log("DO SET TIME OUT FUNCTION");
-//     setTimeout(
-//         function() {
-//             console.log("settimeout function");
-//             pvcComputerChoice[i].classList.remove('highlighted');
+
+
+
+// function animateComputersChoice() {
+//     const number = Math.floor(Math.random() * 20);
+//     let currentTarget = 0;
+//     let condition = 0;
 //
-//         },
-//         3000
-//     )
+//     while(condition < number) {
+//         if(currentTarget === 3) {
+//             currentTarget = 0;
+//         }
+//         let oldTarget;
+//         if(currentTarget === 0) {
+//             oldTarget = 2;
+//         } else {
+//             oldTarget = currentTarget - 1;
+//         }
+//         console.log("oldTarget", oldTarget);
+//
+//         console.log("currentTarget", currentTarget);
+//
+//         pvcComputerChoice[currentTarget].classList.add('highlighted');
+//         pvcComputerChoice[oldTarget].classList.remove('highlighted');
+//         currentTarget++;
+//         condition++;
+//         myLoop();
+//     }
 // }
-// animateComputersChoice();
+
 
 function game(usersChoice) {
     // const computersChoiceValue = computersChoice();
-    animateComputersChoice();
-    // const winner = determineWinner(usersChoice.name, computersChoiceValue);
-    // console.log("Users choice - ", usersChoice.name );
-    // console.log("Computers choice - ", computersChoiceValue, );
-    // winnerBox.classList.remove("hide");
-    // winnerBoxBack.classList.remove("hide");
-    // if(usersChoice.name === winner) {
-    //     leftScore++;
-    //     leftScoreElement.innerHTML = leftScore;
-    //     userWin.classList.remove('hide');
-    //     console.log("Player 1 wins");
-    // } else if (computersChoiceValue === winner) {
-    //     rightScore++;
-    //     rightScoreElement.innerHTML = rightScore;
-    //     userLoss.classList.remove('hide');
-    //
-    //     console.log("Player 2 wins");
-    // } else if (winner === "Draw") {
-    //     userDraw.classList.remove('hide');
-    //
-    //     console.log("Draw");
-    // }
-    // usersChoice.classList.remove("highlighted");
+    // animateComputersChoice();
+    const computersPromise = new Promise(function(resolve, reject) {
+        const cpuTurn = computersTurn();
+        if(cpuTurn) {
+            resolve(cpuTurn);
+        } else {
+            reject(Error("It broke"));
+        }
+
+    })
+    console.log(computersPromise);
+    computersPromise
+        .then(function(response) {
+            console.log("heelllooo");
+            console.log("response", response);
+            const winner = determineWinner(usersChoice.name, response);
+            console.log("Users choice - ", usersChoice.name );
+            console.log("Computers choice - ", response, );
+            winnerBox.classList.remove("hide");
+            winnerBoxBack.classList.remove("hide");
+            if(usersChoice.name === winner) {
+                leftScore++;
+                leftScoreElement.innerHTML = leftScore;
+                userWin.classList.remove('hide');
+                console.log("Player 1 wins");
+            } else if (response === winner) {
+                rightScore++;
+                rightScoreElement.innerHTML = rightScore;
+                userLoss.classList.remove('hide');
+
+                console.log("Player 2 wins");
+            } else if (winner === "Draw") {
+                userDraw.classList.remove('hide');
+
+                console.log("Draw");
+            }
+            usersChoice.classList.remove("highlighted");
+        })
+        .catch(function(err) {
+            console.log("err", err);
+        })
+        console.log("computersPromise 2", computersPromise);
+
+
 }
 
 closeWinnerBox();
