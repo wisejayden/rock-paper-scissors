@@ -6,12 +6,18 @@
 
 ***
 
+<p align="center"><img src="./public/img/RPS-game.png"  width="800"/></p>
+<br>
+
+
 # Run Locally
 
 ```
 clone repo
 open index.html
 ```
+
+
 
 
 <br>
