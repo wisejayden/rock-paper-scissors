@@ -1,52 +1,26 @@
-//Game Select Buttons
-const pvp = document.getElementsByClassName("pvp")[0];
-const pvc = document.getElementsByClassName("pvc")[0];
-const cvc = document.getElementsByClassName("cvc")[0];
-const gameSelection = document.getElementsByClassName("game-selection")[0];
-const playerVsComputerGame = document.getElementsByClassName("player-vs-computer-game")[0];
-const computerVsComputerGame = document.getElementsByClassName("computer-vs-computer-game")[0];
-const goBack = document.getElementsByClassName("go-back");
-const rockLeftSide = document.getElementsByClassName("rock-1");
-const paperLeftSide = document.getElementsByClassName("paper-1");
-const scissorsLeftSide = document.getElementsByClassName("scissors-1");
-const rockRightSide = document.getElementsByClassName("rock-2");
-const paperRightSide = document.getElementsByClassName("paper-2");
-const scissorsRightSide = document.getElementsByClassName("scissors-2");
-const option = document.getElementsByClassName("option");
-
-const rockPVC = document.getElementById('rock-pvc');
-const paperPVC = document.getElementById('paper-pvc');
-const scissorsPVC = document.getElementById('scissors-pvc');
-const loser = document.getElementById('loser');
-
-const winnerBox = document.getElementById('winner-container');
-const winnerBoxBack = document.getElementById('winner-container-back');
-const userWin = document.getElementById('win');
-const userDraw = document.getElementById('draw');
-const userLoss = document.getElementById('lose');
-const closeBox = document.getElementById('close');
-const cpu1win = document.getElementById('cpu1win');
-const cpu2win = document.getElementById('cpu2win');
-const victoryMessage = document.getElementById('victory-message');
-
-const leftScoreElement = document.getElementById('left-score');
-const rightScoreElement = document.getElementById('right-score');
-const pvcComputerChoice =  document.getElementsByClassName("pvc-computer-choice");
-const cvc1ComputerChoice = document.getElementsByClassName('cvc1-choice');
-const cvc2ComputerChoice = document.getElementsByClassName('cvc2-choice');
-const playerOption = document.getElementsByClassName('player-option');
-
-
+                /*                      DOM CACHE                       */
 //Start screen
 const startButton = document.getElementById('start');
 const openScreen = document.getElementById('open-screen');
 const introImage = document.getElementById('intro-image');
-const scoreboard = document.getElementsByClassName('scoreboard')[0];
-const leftPlayerScoreboard = document.getElementById('left-player');
-const rightPlayerScoreboard = document.getElementById('right-player');
 
+//Game Select Buttons
+const pvc = document.getElementsByClassName("pvc")[0];
+const cvc = document.getElementsByClassName("cvc")[0];
+const gameSelection = document.getElementsByClassName("game-selection")[0];
+const cpuBattleButton = document.getElementById('cpu-battle-button');
 
-// Weapon selection
+//Game modes
+const playerVsComputerGame = document.getElementsByClassName("player-vs-computer-game")[0];
+const computerVsComputerGame = document.getElementsByClassName("computer-vs-computer-game")[0];
+const goBack = document.getElementsByClassName("go-back");
+
+//Rock, Paper, Scissors icons
+const option = document.getElementsByClassName("option");
+const pvcComputerChoice =  document.getElementsByClassName("pvc-computer-choice");
+const cvc1ComputerChoice = document.getElementsByClassName('cvc1-choice');
+const cvc2ComputerChoice = document.getElementsByClassName('cvc2-choice');
+const playerOption = document.getElementsByClassName('player-option');
 const leftLargeRockPVC = document.getElementById('rock-selection-pvc-left');
 const leftLargePaperPVC = document.getElementById('paper-selection-pvc-left');
 const leftLargeScissorsPVC = document.getElementById('scissors-selection-pvc-left');
@@ -63,17 +37,35 @@ const leftSideTurnPVC = document.getElementById('left-side-turn-pvc');
 const rightSideTurnPVC = document.getElementById('right-side-turn-pvc');
 const callToAction = document.getElementById('call-to-action');
 
+//Victory Box
+const winnerBox = document.getElementById('winner-container');
+const winnerBoxBack = document.getElementById('winner-container-back');
+const userWin = document.getElementById('win');
+const userDraw = document.getElementById('draw');
+const userLoss = document.getElementById('lose');
+const closeBox = document.getElementById('close');
+const cpu1win = document.getElementById('cpu1win');
+const cpu2win = document.getElementById('cpu2win');
+const victoryMessage = document.getElementById('victory-message');
+
+//Scoreboard
+const leftScoreElement = document.getElementById('left-score');
+const rightScoreElement = document.getElementById('right-score');
+const scoreboard = document.getElementsByClassName('scoreboard')[0];
+const leftPlayerScoreboard = document.getElementById('left-player');
+const rightPlayerScoreboard = document.getElementById('right-player');
+
+//External JSON file containing quotes.
 const quoteData = data;
 
-
-
-
-const cpuBattleButton = document.getElementById('cpu-battle-button');
+//Scoredboard
 let leftScore = 0;
 let rightScore = 0;
 
 //Change speed of computers turn in milliseconds.
 const computerSpeed = 300;
+
+
 
 
 
@@ -175,24 +167,22 @@ function computersTurn (computersArsenal) {
         function animateComputersChoice (computersArsenal) {
            setTimeout(function () {
 
-               //Function calls itself until condition meets the randomised number. Current target controls currently highlighted RPS object, while old target removes previous highlighting.
+               //Function calls itself recursively until condition meets the randomised number. Current target controls currently highlighted RPS object, while old target removes previous highlighting.
               if (condition < number) {
                   currentTarget++;
                   if(currentTarget === 3) {
                       currentTarget = 0;
                   }
-
                   let oldTarget;
                   if(currentTarget === 0) {
                       oldTarget = 2;
                   } else {
                       oldTarget = currentTarget - 1;
                   }
-
                   computersArsenal[currentTarget].classList.add('highlighted');
                   computersArsenal[oldTarget].classList.remove('highlighted');
                   condition++;
-                 animateComputersChoice(computersArsenal);
+                  animateComputersChoice(computersArsenal);
              } else if (number === 0) {
                  //Edge case, if randomised number is 0. Set currentTarget to be highlighted as 0.
                  currentTarget = 0;
@@ -223,11 +213,12 @@ function game(usersChoice) {
     })
     computersPromise
         .then(function(computerResponse) {
-            rightSideTurnPVC.classList.add('hide');
             addRightLargeSelection(computerResponse);
             const winner = determineWinner(usersChoice.name, computerResponse);
+            rightSideTurnPVC.classList.add('hide');
             winnerBox.classList.remove("hide");
             winnerBoxBack.classList.remove("hide");
+            //If the name of the option passed to the game function is the same as the returned value from the determineWinner function. The user is the winner.
             if(usersChoice.name === winner) {
                 const winnerQuote = getQuote(true, usersChoice.name);
                 leftScore++;
@@ -270,11 +261,13 @@ function computerBattle() {
     })
     Promise.all([computersFirstPromise, computersSecondPromise])
         .then(function(responses) {
+            //Display chosen picks and then determine a winner.
             addComputerBattleLargeSelections(responses);
-            const winner = determineWinner(responses[0], responses[1]);
             let randomDigit = Math.floor(Math.random() * quoteData.computer.length);
+            const winner = determineWinner(responses[0], responses[1]);
             winnerBox.classList.remove("hide");
             winnerBoxBack.classList.remove("hide");
+            //Check to see if Computer 1 is the winner.
             if(responses[0] === winner) {
                 leftScore++;
                 leftScoreElement.innerHTML = leftScore;
