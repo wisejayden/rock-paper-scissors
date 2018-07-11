@@ -3,7 +3,6 @@ const pvp = document.getElementsByClassName("pvp")[0];
 const pvc = document.getElementsByClassName("pvc")[0];
 const cvc = document.getElementsByClassName("cvc")[0];
 const gameSelection = document.getElementsByClassName("game-selection")[0];
-// const playerVsPlayerGame = document.getElementsByClassName("player-vs-player-game")[0];
 const playerVsComputerGame = document.getElementsByClassName("player-vs-computer-game")[0];
 const computerVsComputerGame = document.getElementsByClassName("computer-vs-computer-game")[0];
 const goBack = document.getElementsByClassName("go-back");
@@ -62,9 +61,9 @@ const rightLargePaperCVC = document.getElementById('paper-selection-cvc-right');
 const rightLargeScissorsCVC = document.getElementById('scissors-selection-cvc-right');
 const leftSideTurnPVC = document.getElementById('left-side-turn-pvc');
 const rightSideTurnPVC = document.getElementById('right-side-turn-pvc');
+const callToAction = document.getElementById('call-to-action');
 
 const quoteData = data;
-console.log(quoteData);
 
 
 
@@ -77,53 +76,44 @@ let rightScore = 0;
 const computerSpeed = 300;
 
 
+
+/*                          EVENT LISTENERS                                  */
+
 startButton.addEventListener('click', function() {
     gameSelection.classList.remove('hide');
     openScreen.classList.add('hide');
 })
 
 
-// pvp.addEventListener("click", function() {
-//     console.log("pvp");
-//     gameSelection.classList.add("hide");
-//     playerVsPlayerGame.classList.remove("hide");
-//     gameStart("pvp");
-//
-//
-// })
-
+//Open Player Vs Computer game mode
 pvc.addEventListener("click", function() {
     gameSelection.classList.add("hide");
     introImage.classList.add('hide');
     scoreboard.classList.remove('hide');
     leftPlayerScoreboard.innerHTML = "Player";
     rightPlayerScoreboard.innerHTML = "Computer";
-
-
     playerVsComputerGame.classList.remove("hide");
-    gameStart("pvc");
 
 })
+//Open Computer Vs Computer game mode
+
 cvc.addEventListener("click", function() {
     gameSelection.classList.add("hide");
     introImage.classList.add('hide');
     scoreboard.classList.remove('hide');
     leftPlayerScoreboard.innerHTML = "Computer 1";
     rightPlayerScoreboard.innerHTML = "Computer 2";
-
-
     computerVsComputerGame.classList.remove("hide");
-    gameStart("cvc");
 })
 
 for (var i = 0; i < goBack.length; i++) {
     goBack[i].addEventListener("click", function() {
-        // playerVsPlayerGame.classList.add("hide");
         playerVsComputerGame.classList.add("hide");
         computerVsComputerGame.classList.add("hide");
         introImage.classList.remove('hide');
         scoreboard.classList.add('hide');
         gameSelection.classList.remove("hide");
+        callToAction.classList.remove('hide');
         leftScore = 0;
         leftScoreElement.innerHTML = leftScore;
         rightScore = 0;
@@ -136,12 +126,12 @@ cpuBattleButton.addEventListener('click', function() {
     cpuBattleButton.classList.add('hide');
 });
 
-
+//When clicking on an option inside a PVC game, shows larger image of selection and then begins game.
 for (var i = 0; i < playerOption.length; i++) {
     playerOption[i].addEventListener('click', function(e) {
         removeLargeSelection();
-
         leftSideTurnPVC.classList.add('hide');
+        callToAction.classList.add('hide');
         e.target.classList.add("highlighted");
         if(e.target.name === 'rock') {
             leftLargeRockPVC.classList.remove('hide');
@@ -157,9 +147,12 @@ for (var i = 0; i < playerOption.length; i++) {
 
     })
 }
-introImage.addEventListener('click', function() {
-    getQuote(false);
-})
+
+
+        /*              GAME LOGIC                      */
+
+
+//Depending on a win or a loss, and which hand won return a relevant quote to match.
 function getQuote(winCondition, winningOption) {
     if (winCondition === false) {
         let randomDigit = Math.floor(Math.random() * quoteData.loss.length);
@@ -170,12 +163,7 @@ function getQuote(winCondition, winningOption) {
     }
 }
 
-function computersChoice() {
-    const options = ["rock", "paper", "scissors"];
-    const choice = Math.floor(Math.random() * 3);
-    return options[choice];
-}
-
+//computersArsenal is equivalent to the  DOM elements (Rock, paper, scissors) of the selected computer.
 function computersTurn (computersArsenal) {
     return new Promise(function(resolve, reject) {
         //Choose random number. Set starting conditions and then begin recursive function.
@@ -214,7 +202,6 @@ function computersTurn (computersArsenal) {
                  //Once condition has been fulfilled, resolve promise and then return value.
                  return resolve(computersArsenal[currentTarget].name);
              }
-
          }, computerSpeed)
         }
     })
@@ -224,7 +211,7 @@ function computersTurn (computersArsenal) {
 
 
 
-
+//Creates a promise awaiting feedback from the computers turn.
 function game(usersChoice) {
     const computersPromise = new Promise(function(resolve, reject) {
         const cpuTurn = computersTurn(pvcComputerChoice);
@@ -234,15 +221,11 @@ function game(usersChoice) {
             reject(Error("It broke"));
         }
     })
-    console.log(computersPromise);
     computersPromise
         .then(function(computerResponse) {
-            console.log("computers response", computerResponse);
             rightSideTurnPVC.classList.add('hide');
             addRightLargeSelection(computerResponse);
             const winner = determineWinner(usersChoice.name, computerResponse);
-            console.log("Users choice - ", usersChoice.name );
-            console.log("Computers choice - ", computerResponse, );
             winnerBox.classList.remove("hide");
             winnerBoxBack.classList.remove("hide");
             if(usersChoice.name === winner) {
@@ -251,26 +234,23 @@ function game(usersChoice) {
                 victoryMessage.innerHTML = winnerQuote;
                 leftScoreElement.innerHTML = leftScore;
                 userWin.classList.remove('hide');
-                console.log("Player 1 wins");
             } else if (computerResponse === winner) {
                 const loserQuote = getQuote(false);
                 rightScore++;
                 rightScoreElement.innerHTML = rightScore;
                 userLoss.classList.remove('hide');
                 victoryMessage.innerHTML = loserQuote;
-                console.log("Player 2 wins");
             } else if (winner === "Draw") {
                 userDraw.classList.remove('hide');
-
-                console.log("Draw");
+                victoryMessage.innerHTML = "Nobody wins";
             }
         })
         .catch(function(err) {
             console.log("err", err);
         })
-        console.log("computersPromise 2", computersPromise);
 }
 
+//When starting a computer battle create a promise for each side, passing both details to the computersTurn function. Once both have been finished determine a winner.
 function computerBattle() {
     const computersFirstPromise = new Promise(function(resolve, reject) {
         const cpuTurn = computersTurn(cvc1ComputerChoice);
@@ -292,54 +272,50 @@ function computerBattle() {
         .then(function(responses) {
             addComputerBattleLargeSelections(responses);
             const winner = determineWinner(responses[0], responses[1]);
-            console.log(winner);
+            let randomDigit = Math.floor(Math.random() * quoteData.computer.length);
             winnerBox.classList.remove("hide");
             winnerBoxBack.classList.remove("hide");
             if(responses[0] === winner) {
                 leftScore++;
                 leftScoreElement.innerHTML = leftScore;
                 cpu1win.classList.remove('hide');
-                // userWin.classList.remove('hide');
-                console.log("Player 1 wins");
+                victoryMessage.innerHTML = quoteData.computer[randomDigit];
             } else if (responses[1] === winner) {
                 rightScore++;
                 cpu2win.classList.remove('hide');
+                victoryMessage.innerHTML =  quoteData.computer[randomDigit];
                 rightScoreElement.innerHTML = rightScore;
-                // userLoss.classList.remove('hide');
-
-                console.log("Player 2 wins");
             } else if (winner === "Draw") {
-                userDraw.classList.remove('hide');
-
-                console.log("Draw");
+                userDraw.classList.remove('hide')
+                victoryMessage.innerHTML = "Nobody Wins";
             }
-
         })
 }
+
 
 closeWinnerBox();
 function closeWinnerBox() {
     closeBox.addEventListener("click", function() {
-        console.log("closing");
         resetGame();
     })
     winnerBoxBack.addEventListener("click", function() {
         resetGame();
     })
-    document.addEventListener('keypress', function (e) {
+    document.addEventListener('keydown', function (e) {
         if (e.keyCode == 27) {
             resetGame();
         }
     })
 }
 
-
+//Stop propagation to allow user to click outside of modal in order to close it.
 stopPropagation();
 function stopPropagation(e) {
     winnerBox.addEventListener("click", function(e) {
         e.stopPropagation(e);
     })
 }
+
 function resetGame() {
     winnerBox.classList.add('hide');
     winnerBoxBack.classList.add('hide');
@@ -352,18 +328,13 @@ function resetGame() {
     removeLargeSelection();
     victoryMessage.innerHTML = '';
     cpuBattleButton.classList.remove('hide');
-
-
-
-
-
     for (var i = 0; i < option.length; i++) {
         option[i].classList.remove("highlighted");
     }
-
 }
+
+//For Computer Vs Computer battles
 function addComputerBattleLargeSelections(arrayOfChoices) {
-    console.log("arrayOfChoices", arrayOfChoices);
     if(arrayOfChoices[0] === 'rock') {
         leftLargeRockCVC.classList.remove('hide');
     }
@@ -383,8 +354,9 @@ function addComputerBattleLargeSelections(arrayOfChoices) {
         rightLargeScissorsCVC.classList.remove('hide');
     }
 }
+
+//For the computers pick in the Player Vs Computer game
 function addRightLargeSelection(computersPick) {
-    rightLargeRockPVC.classList.remove('hide');
     if(computersPick === 'rock') {
         rightLargeRockPVC.classList.remove('hide');
     }
@@ -395,6 +367,7 @@ function addRightLargeSelection(computersPick) {
         rightLargeScissorsPVC.classList.remove('hide');
     }
 }
+
 
 function removeLargeSelection () {
     leftLargeRockPVC.classList.add('hide');
@@ -409,9 +382,9 @@ function removeLargeSelection () {
     rightLargeRockCVC.classList.add('hide');
     rightLargePaperCVC.classList.add('hide');
     rightLargeScissorsCVC.classList.add('hide');
-
-
 }
+
+
 
 function determineWinner(player1, player2) {
     if(player1 == 'rock' && player2 == 'paper') {
@@ -440,21 +413,5 @@ function determineWinner(player1, player2) {
     }
     if(player1 == 'scissors' && player2 == 'scissors') {
         return "Draw";
-    }
-}
-
-
-
-function gameStart(gameMode) {
-    let rock = document.getElementById('rock-pvc');
-    console.log(rock);
-    if (gameMode === "pvc") {
-        console.log("single player");
-    }
-    if(gameMode === "pvp") {
-        console.log("multiplayer");
-    }
-    if(gameMode === "cvc") {
-        console.log("cpu battle");
     }
 }

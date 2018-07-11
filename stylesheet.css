@@ -1,55 +1,8 @@
-@font-face {
-    font-family: 'audrey';
-    src: url('./public/fonts/audrey-bold-webfont.woff2') format('woff2'),
-        url('./public/fonts/audrey-bold-webfont.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-
-}
-@font-face {
-    font-family: 'coco';
-    src: url('./public/fonts/coco-bold-webfont.woff2') format('woff2'),
-        url('./public/fonts/coco-bold-webfont.woff') format('woff');
-    font-weight: bold;
-    font-style: normal;
-
-}
-@font-face {
-    font-family: 'elianto';
-    src: url('./public/fonts/elianto-regular-webfont.woff2') format('woff2'),
-        url('./public/fonts/elianto-regular-webfont.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-}
 
 @font-face {
     font-family: 'simplifica';
     src: url('./public/fonts/simplifica_typeface-webfont.woff2') format('woff2'),
         url('./public/fonts/simplifica_typeface-webfont.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-
-}
-@font-face {
-    font-family: 'skinny';
-    src: url('./public/fonts/skinny-regular-webfont.woff2') format('woff2'),
-        url('./public/fonts/skinny-regular-webfont.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-
-}
-@font-face {
-    font-family: 'pops';
-    src: url('./public/fonts/pops_08_regular-webfont.woff2') format('woff2'),
-        url('./public/fonts/pops_08_regular-webfont.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-
-}
-@font-face {
-    font-family: 'whatever';
-    src: url('./public/fonts/whatever_it_takes-webfont.woff2') format('woff2'),
-        url('./public/fonts/whatever_it_takes-webfont.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 
@@ -64,7 +17,7 @@
     box-sizing: border-box;
 }
 /*
-colors:
+color swatch:
 #75cae9
 #76bfa0
 #e33c52
@@ -82,7 +35,8 @@ colors:
  */
 
 body {
-    font-family: "helvetica";
+    font-family: "simplifica";
+    letter-spacing: 1px;
 }
 .background {
     background: linear-gradient(to bottom right, #e24e9e, #01c9e6);
@@ -104,6 +58,7 @@ body > h2 {
 
 .go-back {
     width: 100px;
+    cursor: pointer;
 }
 .highlighted {
     border: 1px solid black;
@@ -116,8 +71,8 @@ body > h2 {
 
 button {
   position: absolute;
-  left: 35vw;
-  top: 385px;
+  left: 30vw;
+  top: 67vh;
   transform: translate(-50%);
 
   padding: 8px 24px;
@@ -141,6 +96,7 @@ button:hover {
 
 #cpu-battle-button {
     left: 50vw;
+    top: 50vh;
 }
 
 
@@ -167,7 +123,8 @@ button:focus {
     height: 30vh;
     position: absolute;
     left: 20%;
-    top: 30%;
+    top: 20%;
+    font-size: 25px;
 }
 
 #intro-image {
@@ -196,6 +153,9 @@ header > h1 {
 
 #welcome-message {
     display: block;
+    font-size: 24px;
+    margin-left: 30px;
+    margin-bottom: 25px;
 }
 
 
@@ -219,19 +179,27 @@ header > h1 {
 .left-side-turn {
     color: white;
     position: absolute;
-    left: 22%;
+    left: 21%;
     top: 59%;
-    font-family: 'pops';
-    font-size: 25px;
+    font-family: 'simplifica';
+    font-weight: bold;
+    font-size: 33px;
 }
 .right-side-turn {
     color: white;
     position: absolute;
-    right: 16%;
+    right: 19%;
     top: 59%;
-    font-family: 'pops';
-    font-size: 25px;
+    font-family: 'simplifica';
+    font-weight: bold;
+    font-size: 33px;
+}
 
+#call-to-action {
+    color: white;
+    position: absolute;
+    left: 21vw;
+    top: 67vh;
 }
 
 
@@ -256,15 +224,14 @@ header > h1 {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-left: 30%;
+    margin-left: 27%;
 }
 .player {
     display: block;
     color: white;
     text-align: center;
     margin-bottom: 10px;
-    margin-left: 38px;
-
+    margin-left: 6px;
 }
 .left-selection {
     position: absolute;
@@ -361,4 +328,19 @@ header > h1 {
     color: white;
     font-size: 50px;
     padding-top: 18px;
+}
+
+
+                /* MEDIA QUERIES */
+@media (max-height: 600px) {
+    button{
+        left: 67vw;
+        top: 20vh;
+    }
+}
+@media (max-width: 1000px) {
+    button{
+        left: 67vw;
+        top: 20vh;
+    }
 }

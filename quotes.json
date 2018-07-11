@@ -57,6 +57,22 @@ data = {
         "It is believed in some Eastern European countries that leaving scissors open causes fights and disagreement within a household.",
         "It is believed in China that giving scissors to a friend or loved one is to be cutting ties with them."
 
+    ],
+    "computer": [
+        "The root is at the top of the tree.",
+        "The first electronic computer ENIAC weighed more than 27 tons and took up 1800 square feet.",
+        "Doug Engelbart invented the first computer mouse in around 1964 which was made of wood.",
+        "An average person normally blinks 20 times a minute, but when using a computer he/she blinks only 7 times a minute.",
+        "Ada Lovelace, the daughter of the English poet Lord Byron, is considered to be the first computer programmer.",
+        "\"Before software can be reusable it first has to be usable.\" <br>- Ralph Johnson",
+        "If at first you don’t succeed; call it version 1.0",
+        "If Internet Explorer is brave enough to ask to be your default browser, You are brave enough to ask that girl out.",
+        "Things aren’t always #000000 and #FFFFFF",
+        "A user interface is like a joke. If you have to explain it, it’s not that good.",
+        "\"I don’t care if it works on your machine! We are not shipping your machine!\" <br>– Vidiu Platon",
+        "\"Software Developer\" – An organism that turns caffeine into software",
+        "It’s not a bug. It’s an undocumented feature!"
+
     ]
 
 }
