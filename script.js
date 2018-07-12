@@ -5,19 +5,19 @@ const openScreen = document.getElementById('open-screen');
 const introImage = document.getElementById('intro-image');
 
 //Game Select Buttons
-const pvc = document.getElementsByClassName("pvc")[0];
-const cvc = document.getElementsByClassName("cvc")[0];
-const gameSelection = document.getElementsByClassName("game-selection")[0];
+const pvc = document.getElementsByClassName('pvc')[0];
+const cvc = document.getElementsByClassName('cvc')[0];
+const gameSelection = document.getElementsByClassName('game-selection')[0];
 const cpuBattleButton = document.getElementById('cpu-battle-button');
 
 //Game modes
-const playerVsComputerGame = document.getElementsByClassName("player-vs-computer-game")[0];
-const computerVsComputerGame = document.getElementsByClassName("computer-vs-computer-game")[0];
-const goBack = document.getElementsByClassName("go-back");
+const playerVsComputerGame = document.getElementsByClassName('player-vs-computer-game')[0];
+const computerVsComputerGame = document.getElementsByClassName('computer-vs-computer-game')[0];
+const goBack = document.getElementsByClassName('go-back');
 
 //Rock, Paper, Scissors icons
-const option = document.getElementsByClassName("option");
-const pvcComputerChoice =  document.getElementsByClassName("pvc-computer-choice");
+const option = document.getElementsByClassName('option');
+const pvcComputerChoice =  document.getElementsByClassName('pvc-computer-choice');
 const cvc1ComputerChoice = document.getElementsByClassName('cvc1-choice');
 const cvc2ComputerChoice = document.getElementsByClassName('cvc2-choice');
 const playerOption = document.getElementsByClassName('player-option');
@@ -70,38 +70,36 @@ const computerSpeed = 300;
 
 
 /*                          EVENT LISTENERS                                  */
-
 startButton.addEventListener('click', function() {
     gameSelection.classList.remove('hide');
     openScreen.classList.add('hide');
 })
 
-
 //Open Player Vs Computer game mode
-pvc.addEventListener("click", function() {
-    gameSelection.classList.add("hide");
+pvc.addEventListener('click', function() {
+    gameSelection.classList.add('hide');
     introImage.classList.add('hide');
     scoreboard.classList.remove('hide');
-    leftPlayerScoreboard.innerHTML = "Player";
-    rightPlayerScoreboard.innerHTML = "Computer";
-    playerVsComputerGame.classList.remove("hide");
+    leftPlayerScoreboard.innerHTML = 'Player';
+    rightPlayerScoreboard.innerHTML = 'Computer';
+    playerVsComputerGame.classList.remove('hide');
 
 })
+
 //Open Computer Vs Computer game mode
-
-cvc.addEventListener("click", function() {
-    gameSelection.classList.add("hide");
+cvc.addEventListener('click', function() {
+    gameSelection.classList.add('hide');
     introImage.classList.add('hide');
     scoreboard.classList.remove('hide');
-    leftPlayerScoreboard.innerHTML = "Computer 1";
-    rightPlayerScoreboard.innerHTML = "Computer 2";
-    computerVsComputerGame.classList.remove("hide");
+    leftPlayerScoreboard.innerHTML = 'Computer 1';
+    rightPlayerScoreboard.innerHTML = 'Computer 2';
+    computerVsComputerGame.classList.remove('hide');
 })
 
-for (var i = 0; i < goBack.length; i++) {
-    goBack[i].addEventListener("click", function() {
-        playerVsComputerGame.classList.add("hide");
-        computerVsComputerGame.classList.add("hide");
+for (let i = 0; i < goBack.length; i++) {
+    goBack[i].addEventListener('click', function() {
+        playerVsComputerGame.classList.add('hide');
+        computerVsComputerGame.classList.add('hide');
         introImage.classList.remove('hide');
         scoreboard.classList.add('hide');
         gameSelection.classList.remove("hide");
@@ -113,18 +111,19 @@ for (var i = 0; i < goBack.length; i++) {
     })
 }
 
+//In Computer vs Computer game mode, starts battle.
 cpuBattleButton.addEventListener('click', function() {
     computerBattle();
     cpuBattleButton.classList.add('hide');
 });
 
 //When clicking on an option inside a PVC game, shows larger image of selection and then begins game.
-for (var i = 0; i < playerOption.length; i++) {
+for (let i = 0; i < playerOption.length; i++) {
     playerOption[i].addEventListener('click', function(e) {
         removeLargeSelection();
         leftSideTurnPVC.classList.add('hide');
         callToAction.classList.add('hide');
-        e.target.classList.add("highlighted");
+        e.target.classList.add('highlighted');
         if(e.target.name === 'rock') {
             leftLargeRockPVC.classList.remove('hide');
         }
@@ -143,64 +142,6 @@ for (var i = 0; i < playerOption.length; i++) {
 
         /*              GAME LOGIC                      */
 
-
-//Depending on a win or a loss, and which hand won return a relevant quote to match.
-function getQuote(winCondition, winningOption) {
-    if (winCondition === false) {
-        let randomDigit = Math.floor(Math.random() * quoteData.loss.length);
-        return quoteData.loss[randomDigit];
-    } else {
-        let randomDigit = Math.floor(Math.random() * quoteData[winningOption].length);
-        return quoteData[winningOption][randomDigit];
-    }
-}
-
-//computersArsenal is equivalent to the  DOM elements (Rock, paper, scissors) of the selected computer.
-function computersTurn (computersArsenal) {
-    return new Promise(function(resolve, reject) {
-        //Choose random number. Set starting conditions and then begin recursive function.
-        const number = Math.floor(Math.random() * 15);
-        let currentTarget = -1;
-        let condition = 0;
-        animateComputersChoice(computersArsenal);
-
-        function animateComputersChoice (computersArsenal) {
-           setTimeout(function () {
-
-               //Function calls itself recursively until condition meets the randomised number. Current target controls currently highlighted RPS object, while old target removes previous highlighting.
-              if (condition < number) {
-                  currentTarget++;
-                  if(currentTarget === 3) {
-                      currentTarget = 0;
-                  }
-                  let oldTarget;
-                  if(currentTarget === 0) {
-                      oldTarget = 2;
-                  } else {
-                      oldTarget = currentTarget - 1;
-                  }
-                  computersArsenal[currentTarget].classList.add('highlighted');
-                  computersArsenal[oldTarget].classList.remove('highlighted');
-                  condition++;
-                  animateComputersChoice(computersArsenal);
-             } else if (number === 0) {
-                 //Edge case, if randomised number is 0. Set currentTarget to be highlighted as 0.
-                 currentTarget = 0;
-                 computersArsenal[currentTarget].classList.add('highlighted');
-                 return resolve(computersArsenal[currentTarget].name);
-             } else {
-                 //Once condition has been fulfilled, resolve promise and then return value.
-                 return resolve(computersArsenal[currentTarget].name);
-             }
-         }, computerSpeed)
-        }
-    })
-}
-
-
-
-
-
 //Creates a promise awaiting feedback from the computers turn.
 function game(usersChoice) {
     const computersPromise = new Promise(function(resolve, reject) {
@@ -213,10 +154,11 @@ function game(usersChoice) {
     })
     computersPromise
         .then(function(computerResponse) {
+            //Shows large image of computer selection.
             addRightLargeSelection(computerResponse);
             const winner = determineWinner(usersChoice.name, computerResponse);
             rightSideTurnPVC.classList.add('hide');
-            winnerBox.classList.remove("hide");
+            winnerBox.classList.remove('hide');
             winnerBoxBack.classList.remove("hide");
             //If the name of the option passed to the game function is the same as the returned value from the determineWinner function. The user is the winner.
             if(usersChoice.name === winner) {
@@ -231,7 +173,7 @@ function game(usersChoice) {
                 rightScoreElement.innerHTML = rightScore;
                 userLoss.classList.remove('hide');
                 victoryMessage.innerHTML = loserQuote;
-            } else if (winner === "Draw") {
+            } else if (winner === 'Draw') {
                 userDraw.classList.remove('hide');
                 victoryMessage.innerHTML = "Nobody wins";
             }
@@ -261,12 +203,12 @@ function computerBattle() {
     })
     Promise.all([computersFirstPromise, computersSecondPromise])
         .then(function(responses) {
-            //Display chosen picks and then determine a winner.
+            //Display chosen picks as a large image and then determine a winner. randomDigit is to be used for victory quote.
             addComputerBattleLargeSelections(responses);
             let randomDigit = Math.floor(Math.random() * quoteData.computer.length);
             const winner = determineWinner(responses[0], responses[1]);
-            winnerBox.classList.remove("hide");
-            winnerBoxBack.classList.remove("hide");
+            winnerBox.classList.remove('hide');
+            winnerBoxBack.classList.remove('hide');
             //Check to see if Computer 1 is the winner.
             if(responses[0] === winner) {
                 leftScore++;
@@ -286,12 +228,70 @@ function computerBattle() {
 }
 
 
+//computersArsenal is equivalent to the  DOM elements (Rock, paper, scissors) of the selected computer.
+//The reason a recursive setTimeout function and promises were used is to simulate the actions of a computer slowly choosing their turn.
+function computersTurn (computersArsenal) {
+    return new Promise(function(resolve, reject) {
+        //Choose random number. Set starting conditions and then begin recursive function.
+        const number = Math.floor(Math.random() * 15);
+        let currentTarget = -1;
+        let condition = 0;
+        animateComputersChoice(computersArsenal);
+        
+        function animateComputersChoice (computersArsenal) {
+           setTimeout(function () {
+               //Function calls itself recursively until condition meets the randomised number. Current target controls currently highlighted RPS object, while old target removes previous highlighting.
+              if (condition < number) {
+                  currentTarget++;
+                  //Only three elements, so if currentTarget goes above, resets number.
+                  if(currentTarget === 3) {
+                      currentTarget = 0;
+                  }
+                  let oldTarget;
+                  if(currentTarget === 0) {
+                      oldTarget = 2;
+                  } else {
+                      oldTarget = currentTarget - 1;
+                  }
+                  computersArsenal[currentTarget].classList.add('highlighted');
+                  computersArsenal[oldTarget].classList.remove('highlighted');
+                  condition++;
+                  animateComputersChoice(computersArsenal);
+             } else if (number === 0) {
+                 //Edge case, if randomised number is 0. Set currentTarget to be highlighted as 0.
+                 currentTarget = 0;
+                 computersArsenal[currentTarget].classList.add('highlighted');
+                 return resolve(computersArsenal[currentTarget].name);
+             } else {
+                 //Once condition has been fulfilled, resolve promise and then return value.
+                 return resolve(computersArsenal[currentTarget].name);
+             }
+             //computerSpeed is the timer for the setTimeout function. Can be adjusted at the top.
+         }, computerSpeed)
+        }
+    })
+}
+
+
+//Depending on a win or a loss, and which hand won return a relevant quote to match.
+function getQuote(winCondition, winningOption) {
+    if (winCondition === false) {
+        let randomDigit = Math.floor(Math.random() * quoteData.loss.length);
+        return quoteData.loss[randomDigit];
+    } else {
+        let randomDigit = Math.floor(Math.random() * quoteData[winningOption].length);
+        return quoteData[winningOption][randomDigit];
+    }
+}
+
+
+//Allows user to close Victory box by clicking on the 'X', clicking outside the modal or pressing 'escape'.
 closeWinnerBox();
 function closeWinnerBox() {
-    closeBox.addEventListener("click", function() {
+    closeBox.addEventListener('click', function() {
         resetGame();
     })
-    winnerBoxBack.addEventListener("click", function() {
+    winnerBoxBack.addEventListener('click', function() {
         resetGame();
     })
     document.addEventListener('keydown', function (e) {
@@ -304,7 +304,7 @@ function closeWinnerBox() {
 //Stop propagation to allow user to click outside of modal in order to close it.
 stopPropagation();
 function stopPropagation(e) {
-    winnerBox.addEventListener("click", function(e) {
+    winnerBox.addEventListener('click', function(e) {
         e.stopPropagation(e);
     })
 }
@@ -321,12 +321,12 @@ function resetGame() {
     removeLargeSelection();
     victoryMessage.innerHTML = '';
     cpuBattleButton.classList.remove('hide');
-    for (var i = 0; i < option.length; i++) {
-        option[i].classList.remove("highlighted");
+    for (let i = 0; i < option.length; i++) {
+        option[i].classList.remove('highlighted');
     }
 }
 
-//For Computer Vs Computer battles
+//For Computer Vs Computer battles, shows their selection.
 function addComputerBattleLargeSelections(arrayOfChoices) {
     if(arrayOfChoices[0] === 'rock') {
         leftLargeRockCVC.classList.remove('hide');
@@ -348,7 +348,7 @@ function addComputerBattleLargeSelections(arrayOfChoices) {
     }
 }
 
-//For the computers pick in the Player Vs Computer game
+//For the computers selection in the Player Vs Computer game
 function addRightLargeSelection(computersPick) {
     if(computersPick === 'rock') {
         rightLargeRockPVC.classList.remove('hide');
